@@ -1,0 +1,13 @@
+{
+    "model_file": "config/weaponconfig/converted_model.bin",
+    "model_name": "weapon_640x640_nv12",
+    "dnn_Parser": "yolov5",
+    "model_output_count": 3,
+    "class_num": 3,
+    "cls_names_list": "config/weaponconfig/custom.list",
+    "strides": [8, 16, 32],
+    "score_threshold": 0.4,
+    "nms_threshold": 0.5,
+    "nms_top_k": 500,
+    "output_order": [0, 1, 2]
+}

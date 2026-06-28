@@ -1,0 +1,31 @@
+
+# 编译产物
+build/
+install/
+log/
+devel/
+build_isolated/
+install_isolated/
+
+# Python缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 固件编译文件
+Debug/
+Release/
+*.bin
+*.elf
+*.hex
+
+# 系统临时文件
+.DS_Store
+Thumbs.db

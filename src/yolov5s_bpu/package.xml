@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>yolov5s_bpu</name>
+  <version>1.0.0</version>
+  <description>YOLOv5s object detection node accelerated by Horizon RDK X5 BPU, with websocket visualization</description>
+  <maintainer email="user@example.com">user</maintainer>
+  <license>Apache License 2.0</license>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>ai_msgs</depend>
+  <depend>hbm_img_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>detection_interfaces</depend>
+
+  <exec_depend>websocket</exec_depend>
+  <exec_depend>hobot_shm</exec_depend>
+  <exec_depend>hobot_codec</exec_depend>
+  <exec_depend>deptrum-ros-driver-aurora930</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
