@@ -127,7 +127,9 @@ class YOLOv5sBPUNode(Node):
             self.names = [l.strip() for l in f if l.strip()]
         self.get_logger().info(f'Config: {config_file}')
         self.get_logger().info(f'Model: {m} | classes={self.nc}')
-        self.get_logger().info(f'Model: {m} | classes={self.nc}')
+
+        # 名称重映射
+        self._remap = {'hand': 'lance', 'fist': 'hand', 'lance': 'fist'}
 
         # BPU
         self.models = dnn.load(m)
@@ -152,6 +154,9 @@ class YOLOv5sBPUNode(Node):
             d = np.frombuffer(msg.data, dtype=np.uint16).reshape(msg.height, msg.width).copy()
             with self._dlock: self._depth = d
         except Exception: pass
+
+    def _remap_name(self, name):
+        return self._remap.get(name, name)
 
     def _depth_at(self, cx, cy, r=3):
         with self._dlock:
@@ -214,7 +219,8 @@ class YOLOv5sBPUNode(Node):
                 b = d['bbox']
                 cx, cy = (b[0]+b[2])/2.0/org_w, (b[1]+b[3])/2.0/org_h
                 mm = self._depth_at(cx, cy)
-                name = self.names[d['id']] if 0 <= d['id'] < len(self.names) else '?'
+                raw_name = self.names[d['id']] if 0 <= d['id'] < len(self.names) else '?'
+                name = self._remap_name(raw_name)
                 label = f'{name} {d["score"]:.2f} {mm}mm' if mm else f'{name} {d["score"]:.2f}'
                 t = Target(type=label, track_id=0)
                 roi = Roi(type=label, confidence=d['score'])
@@ -231,7 +237,7 @@ class YOLOv5sBPUNode(Node):
                 b = d['bbox']
                 r = DetectionResult()
                 cls_id = d['id']
-                r.name = self.names[cls_id] if 0 <= cls_id < len(self.names) else '?'
+                r.name = self._remap_name(self.names[cls_id] if 0 <= cls_id < len(self.names) else '?')
                 r.x1 = b[0] / org_w
                 r.y1 = b[1] / org_h
                 r.x2 = b[2] / org_w
