@@ -2,6 +2,28 @@
 
 Horizon RDK X5 上的实时目标检测与深度标注系统，用于自主机器人感知。
 
+## 开机自启动
+
+已配置 systemd 服务，开机离线自动启动：
+
+```bash
+# 启停控制
+systemctl start ros2-yolo      # 立即启动
+systemctl stop ros2-yolo       # 停止
+systemctl status ros2-yolo     # 查看状态
+systemctl enable ros2-yolo     # 开机自启（已启用）
+systemctl disable ros2-yolo    # 取消开机自启
+
+# 查看日志
+journalctl -u ros2-yolo -f     # 实时
+tail -f ~/dev_ws/log/auto_start.log        # stdout
+tail -f ~/dev_ws/log/auto_start_error.log  # stderr
+```
+
+服务文件：`/etc/systemd/system/ros2-yolo.service`，崩溃后 10 秒自动重启。
+
+ROS2 节点（可用 `ros2 node list` 查看）：`/yolov5s_bpu`、`/websocket`、`/aurora/aurora930_node`
+
 ## 硬件架构
 
 ```
